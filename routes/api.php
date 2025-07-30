@@ -7,7 +7,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\TicketController;
 
 // Event
-Route::get('/event', [EventController::class, 'index']); //List event
+Route::get('/event/{userId}', [EventController::class, 'index']); //List event
 Route::post('/event', [EventController::class, 'store']); // Event organizer create event
 
 // Book

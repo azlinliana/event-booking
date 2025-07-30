@@ -3,19 +3,35 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\Event;
 use App\Models\Ticket;
 
 class EventController extends Controller
 {
     /**
-     * Display a list of the event.
+     * 1. Display a list of the event.
+     * 2. For the VIP ticket, only VIP customer can see 24 hours earlier
+     * 3. After 24 hours VIP customer and normal customer can view all
      */
-    public function index()
+    public function index($userId)
     {
-        $events = Event::all();
+        $checkVIP = User::find($userId)->is_vip;
 
-        return response()->json($events, 200);
+        if ($checkVIP === 1) {
+            // Get VIP event ticket + normal event ticket
+            $getVIPEventTicket = Ticket::with('event')
+                ->get();
+
+            return response()->json($getVIPEventTicket, 200);
+        }
+
+        // Get all normal event tickets
+        $getNormalEventTicket = Ticket::with('event')
+            ->where('is_vip', 0)
+            ->get();
+    
+        return response()->json($getNormalEventTicket, 200);
     }
 
     /**
