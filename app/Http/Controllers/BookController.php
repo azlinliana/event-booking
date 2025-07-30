@@ -30,7 +30,7 @@ class BookController extends Controller
 
         // Calculate total price of ticket based on the number purchased ticket
         // ticket_price * no_purchased_ticket
-        $total_price_ticket = ($getTicket->ticket_price) * ($request->no_purchased_ticket);
+        $total_price_ticket = round(($getTicket->ticket_price) * ($request->no_purchased_ticket), 2);
 
         // Create booking
         $book = Book::create([
