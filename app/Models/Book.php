@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     protected $fillable = [
-        'event_id',
-        'number_ticket',
-        'total_price'
+        'user_id',
+        'ticket_id',
     ];
 }
