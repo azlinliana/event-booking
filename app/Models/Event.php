@@ -8,9 +8,8 @@ class Event extends Model
 {
     protected $fillable = [
         'name', 
-        'date', 
-        // 'venue', 
-        'total_ticket_available',
-        'ticket_price'
+        'date',
+        'venue', 
+        'total_ticket_available'
     ];
 }
