@@ -3,84 +3,48 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Ticket;
 use App\Models\Book;
-use App\Models\Event;
 
 class BookController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
         $request->validate([
-            'event_id' => ['required'],
-            'number_ticket' => ['required', 'integer'],
+            'user_id' => ['required'],
+            'ticket_id' => ['required'],
+            'no_purchased_ticket' => ['required', 'integer'],
         ]);
 
-        $getEvent = Event::find($request->event_id);
+        // Get user info
+        $getUser = User::where('id', $request->user_id)
+            ->first();
 
-        dd($getEvent);
-        // Calculate total price based on the number of ticket
-        $total_price = * ($request->number_ticket);
+        // Get ticket info
+        $getTicket = Ticket::where('id', $request->ticket_id)
+            ->first();
 
-        // $book = Book::create([
-        //     'event_id' => $request->event_id,
-        //     'number_ticket' => $request->number_ticket,
-        //     'total_price' =>
-        // ]);
+        // Calculate total price of ticket based on the number purchased ticket
+        // ticket_price * no_purchased_ticket
+        $total_price_ticket = ($getTicket->ticket_price) * ($request->no_purchased_ticket);
 
-        // return response()->json([
-        //     'data' => $book,
-        //     'message' => 'Booking created!'
-        // ], 200);
-    }
+        // Create booking
+        $book = Book::create([
+            'user_id' => $getUser->id,
+            'ticket_id' => $getTicket->id,
+            'no_purchased_ticket' => $request->no_purchased_ticket,
+            'total_price_ticket' => $total_price_ticket
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return response()->json([
+            'dataUser' => $getUser,
+            'dataTicket' => $getTicket,
+            'dataBooking' => $book,
+            'message' => 'Booking created!'
+        ], 200);
     }
 }
