@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->date('date');
-            $table->decimal('total_ticket_available', places: 2);
-            $table->string('ticket_price');
+            $table->string('venue');
+            $table->integer('total_ticket_available');
             $table->timestamps();
         });
     }
