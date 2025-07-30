@@ -46,3 +46,9 @@ php artisan migrate --seed
 
 # Serve project
 composer run dev
+
+``` 
+
+## Entity Relationship Diagram (ERD)
+![ERD](public/erd-event-booking.png)
+
