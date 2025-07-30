@@ -18,35 +18,43 @@ This is a simple e-ticketing system built with Laravel 12 for event booking purp
 - Postman (Testing endpoint)
 
 ## Installation
+Follow these steps to run the project on your local machine.
 
+1. Clone project & navigate to folder
 ```bash
 git clone https://github.com/azlinliana/event-booking.git
 cd event-booking
+```
 
-# Install dependencies
+2. Install dependencies
+```bash
 npm install && npm run build
+```
 
-# Setup environment
+3. Setup environment
+```bash
 cp .env.example .env
 php artisan key:generate
+```
 
-# Configure DB in .env
+4. Configure DB in .env
+```bash
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=event-booking
 DB_USERNAME=root
 DB_PASSWORD=
+```
 
-# Run migration
-php artisan migrate
-
-# Run migration with seeder
+5. Run migration with seeder
+```bash
 php artisan migrate --seed
+```
 
-# Serve project
+6. Serve project
+```bash
 composer run dev
-
 ``` 
 
 ## Entity Relationship Diagram (ERD)
