@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\Ticket;
+use Carbon\Carbon;
 
 class EventController extends Controller
 {
@@ -16,22 +17,25 @@ class EventController extends Controller
      */
     public function index($userId)
     {
-        $checkVIP = User::find($userId)->is_vip;
+        // Get user
+        $user = User::find($userId);
 
-        if ($checkVIP === 1) {
-            // Get VIP event ticket + normal event ticket
-            $getVIPEventTicket = Ticket::with('event')
+        if ($user->is_vip == 1) {
+            $getTicketsVIP = Ticket::with('event')
                 ->get();
 
-            return response()->json($getVIPEventTicket, 200);
+            return response()->json($getTicketsVIP, 200);
         }
 
-        // Get all normal event tickets
-        $getNormalEventTicket = Ticket::with('event')
-            ->where('is_vip', 0)
+        $getTickets = Ticket::with('event')
+            ->where(function ($query) {
+                $query->where('is_vip', 0)
+                ->orWhere('is_vip', 1)
+                ->where('created_at', '<=', Carbon::now()->subHours(24));
+            })
             ->get();
-    
-        return response()->json($getNormalEventTicket, 200);
+
+        return response()->json($getTickets, 200);
     }
 
     /**
